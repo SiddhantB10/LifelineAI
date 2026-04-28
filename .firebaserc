@@ -1,0 +1,16 @@
+{
+  "projects": {
+    "default": "lifeline-ai",
+    "lifeline-ai": "lifeline-ai-67fac"
+  },
+  "targets": {
+    "lifeline-ai-67fac": {
+      "hosting": {
+        "web": [
+          "lifelineai-100"
+        ]
+      }
+    }
+  },
+  "etags": {}
+}

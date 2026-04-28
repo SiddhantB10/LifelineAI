@@ -1,0 +1,12 @@
+node_modules
+dist
+build
+.DS_Store
+.env
+.env.local
+frontend/dist
+backend/dist
+coverage
+*.log
+lifeline-ai-67fac-firebase-adminsdk-fbsvc-1c3fd9747d.json
+datasets/

@@ -1,0 +1,21 @@
+{
+  "name": "lifeline-ai-functions",
+  "private": true,
+  "version": "1.0.0",
+  "main": "index.js",
+  "engines": {
+    "node": "20"
+  },
+  "scripts": {
+    "serve": "firebase emulators:start --only functions",
+    "deploy": "firebase deploy --only functions",
+    "lint": "echo \"Add ESLint if desired\"",
+    "seed": "node seedFirestore.js"
+  },
+  "dependencies": {
+    "firebase-admin": "^11.7.0",
+    "firebase-functions": "^4.4.0",
+    "axios": "^1.11.0",
+    "dotenv": "^17.2.1"
+  }
+}
