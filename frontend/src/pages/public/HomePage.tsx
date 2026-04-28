@@ -16,7 +16,7 @@ const testimonials = [
 
 export function HomePage() {
   return (
-    <div className="bg-slate-950">
+    <div className="bg-[var(--bg)] text-[var(--text)]">
       {/* Hero Section */}
       <section className="mx-auto max-w-7xl px-responsive-sm py-responsive-lg md:px-responsive-md md:py-responsive-xl">
         <div className="grid items-center gap-responsive-lg lg:gap-responsive-xl lg:grid-cols-[1.08fr_0.92fr]">
@@ -26,11 +26,11 @@ export function HomePage() {
               <span>Emergency response intelligence</span>
             </div>
 
-            <h1 className="text-responsive-4xl xs:text-responsive-5xl font-semibold tracking-tight text-white mt-responsive-md">
+            <h1 className="mt-responsive-md text-responsive-4xl font-semibold tracking-tight text-[var(--text)] xs:text-responsive-5xl">
               Smart emergency response for the golden hour.
             </h1>
 
-            <p className="mt-responsive-md max-w-2xl text-responsive-base xs:text-responsive-lg leading-7 xs:leading-8 text-slate-300">
+            <p className="mt-responsive-md max-w-2xl text-responsive-base leading-7 text-[var(--muted)] xs:text-responsive-lg xs:leading-8">
               LIFELINE AI connects citizens, ambulances, hospitals, and city operators in one life-saving network with live tracking, AI severity analysis, and intelligent hospital routing.
             </p>
 
@@ -38,7 +38,7 @@ export function HomePage() {
               <NavLink to="/signup">
                 <PrimaryButton>Launch Demo <ArrowRight className="h-4 w-4" /></PrimaryButton>
               </NavLink>
-              <NavLink to="/features" className="inline-flex items-center justify-center xs:justify-start gap-2 rounded-full border border-white/10 bg-white/5 px-responsive-md py-responsive-sm text-xs xs:text-sm font-semibold text-white transition hover:bg-white/10">
+              <NavLink to="/features" className="inline-flex items-center justify-center gap-2 rounded-full border border-[var(--border)] bg-[var(--card-soft)] px-responsive-md py-responsive-sm text-xs font-semibold text-[var(--text)] transition hover:bg-[var(--surface-strong)] xs:justify-start xs:text-sm">
                 Explore features
               </NavLink>
             </div>
@@ -49,7 +49,7 @@ export function HomePage() {
                   <StatCard key={stat.label} {...stat} />
                 ))
               ) : (
-                <div className="col-span-full rounded-2xl border border-white/10 bg-white/5 p-responsive-md text-center text-slate-400">
+                <div className="col-span-full rounded-2xl border border-[var(--border)] bg-[var(--card-soft)] p-responsive-md text-center text-[var(--muted)]">
                   <p className="text-sm">Real-time statistics will appear here once the system is live.</p>
                 </div>
               )}
@@ -62,19 +62,19 @@ export function HomePage() {
               <div className="absolute inset-0 bg-gradient-to-br from-red-500/10 via-transparent to-blue-500/10" />
               <div className="relative grid gap-responsive-sm md:gap-responsive-md md:grid-cols-2">
                 <div>
-                  <p className="text-xs uppercase tracking-[0.3em] text-slate-400">Operator overview</p>
-                  <div className="mt-responsive-sm text-2xl xs:text-3xl font-semibold text-white">16 active emergencies</div>
-                  <p className="mt-responsive-sm text-xs xs:text-sm text-slate-300">Critical incidents are automatically prioritized by severity, distance, and specialty availability.</p>
+                  <p className="text-xs uppercase tracking-[0.3em] text-[var(--muted)]">Operator overview</p>
+                  <div className="mt-responsive-sm text-2xl font-semibold text-[var(--text)] xs:text-3xl">16 active emergencies</div>
+                  <p className="mt-responsive-sm text-xs text-[var(--muted)] xs:text-sm">Critical incidents are automatically prioritized by severity, distance, and specialty availability.</p>
                 </div>
-                <div className="rounded-3xl border border-white/10 bg-slate-950/60 p-responsive-sm">
-                  <div className="flex items-center justify-between text-xs text-slate-400">
+                <div className="rounded-3xl border border-[var(--border)] bg-[var(--card-strong)] p-responsive-sm">
+                  <div className="flex items-center justify-between text-xs text-[var(--muted)]">
                     <span>Next ambulance ETA</span>
                     <span className="text-emerald-300 font-semibold">4 min</span>
                   </div>
-                  <div className="mt-responsive-sm h-2 overflow-hidden rounded-full bg-white/10">
+                  <div className="mt-responsive-sm h-2 overflow-hidden rounded-full bg-[var(--card-soft)]">
                     <div className="h-full w-3/4 rounded-full bg-gradient-to-r from-red-500 to-orange-400" />
                   </div>
-                  <p className="mt-responsive-sm text-xs xs:text-sm text-slate-300">Route optimization and hospital matching are re-evaluated every few seconds.</p>
+                  <p className="mt-responsive-sm text-xs text-[var(--muted)] xs:text-sm">Route optimization and hospital matching are re-evaluated every few seconds.</p>
                 </div>
               </div>
             </GlassCard>
@@ -96,7 +96,7 @@ export function HomePage() {
           {Object.entries(dashboardModules).map(([role, modules]) => (
             <GlassCard key={role}>
               <p className="text-xs uppercase tracking-[0.3em] text-red-300/80">{role}</p>
-              <ul className="mt-responsive-md space-y-responsive-sm text-xs xs:text-sm text-slate-300">
+              <ul className="mt-responsive-md space-y-responsive-sm text-xs text-[var(--muted)] xs:text-sm">
                 {modules.map((module) => (
                   <li key={module} className="flex items-start gap-responsive-sm">
                     <span className="h-2 w-2 rounded-full bg-red-400 flex-shrink-0 mt-1.5" />
@@ -118,11 +118,11 @@ export function HomePage() {
                   {item.name.slice(0, 1)}
                 </div>
                 <div className="min-w-0">
-                  <div className="font-semibold text-white text-sm xs:text-base truncate">{item.name}</div>
-                  <div className="text-xs text-slate-400 truncate">{item.role}</div>
+                  <div className="truncate text-sm font-semibold text-[var(--text)] xs:text-base">{item.name}</div>
+                  <div className="truncate text-xs text-[var(--muted)]">{item.role}</div>
                 </div>
               </div>
-              <p className="text-xs xs:text-sm leading-6 xs:leading-7 text-slate-300">"{item.quote}"</p>
+              <p className="text-xs leading-6 text-[var(--muted)] xs:text-sm xs:leading-7">"{item.quote}"</p>
             </GlassCard>
           ))}
         </div>
@@ -133,16 +133,16 @@ export function HomePage() {
           <div className="grid gap-responsive-md md:gap-responsive-lg md:grid-cols-[1.2fr_0.8fr] md:items-center">
             <div>
               <p className="text-xs uppercase tracking-[0.3em] text-red-300/80">Smart city readiness</p>
-              <h3 className="mt-responsive-sm text-responsive-2xl xs:text-responsive-3xl font-semibold text-white">
+              <h3 className="mt-responsive-sm text-responsive-2xl font-semibold text-[var(--text)] xs:text-responsive-3xl">
                 Command centers, hospitals, and ambulances sharing one response fabric.
               </h3>
-              <p className="mt-responsive-md max-w-2xl text-xs xs:text-sm leading-6 xs:leading-7 text-slate-300">
+              <p className="mt-responsive-md max-w-2xl text-xs leading-6 text-[var(--muted)] xs:text-sm xs:leading-7">
                 Use the platform to reduce arrival time, improve triage, detect hotspots, and keep families informed from the first alert to hospital handoff.
               </p>
             </div>
             <div className="flex flex-wrap gap-responsive-sm justify-start md:justify-end">
               {['AI severity', 'Live GPS', 'Hospital load', 'Family alerts', 'Hotspot heatmap'].map((label) => (
-                <span key={label} className="rounded-full border border-white/10 bg-white/5 px-responsive-sm py-2 text-xs xs:text-sm text-slate-200 whitespace-nowrap">
+                <span key={label} className="rounded-full border border-[var(--border)] bg-[var(--card-soft)] px-responsive-sm py-2 text-xs text-[var(--text)] whitespace-nowrap xs:text-sm">
                   {label}
                 </span>
               ))}

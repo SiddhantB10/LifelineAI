@@ -12,14 +12,14 @@ export function EmergencyMap() {
   if (!emergency || !ambulance || !hospital) {
     return (
       <GlassCard className="overflow-hidden p-0">
-        <div className="border-b border-white/10 px-5 py-4">
-          <p className="text-sm font-semibold text-white">Live Emergency Map</p>
-          <p className="text-xs text-slate-400">Tracking ambulance, patient, and hospital routing in real time</p>
+        <div className="border-b border-[var(--border)] px-5 py-4">
+          <p className="text-sm font-semibold text-[var(--text)]">Live Emergency Map</p>
+          <p className="text-xs text-[var(--muted)]">Tracking ambulance, patient, and hospital routing in real time</p>
         </div>
-        <div className="h-[360px] md:h-[460px] flex items-center justify-center bg-gradient-to-br from-slate-900 to-slate-950">
+        <div className="flex h-[360px] items-center justify-center bg-[var(--card-strong)] md:h-[460px]">
           <div className="text-center">
-            <div className="text-slate-500 mb-2">No active emergencies</div>
-            <p className="text-xs text-slate-600">Map will display live emergency tracking when incidents are reported</p>
+            <div className="mb-2 text-[var(--muted)]">No active emergencies</div>
+            <p className="text-xs text-[var(--muted)]">Map will display live emergency tracking when incidents are reported</p>
           </div>
         </div>
       </GlassCard>
@@ -28,9 +28,9 @@ export function EmergencyMap() {
 
   return (
     <GlassCard className="overflow-hidden p-0">
-      <div className="border-b border-white/10 px-5 py-4">
-        <p className="text-sm font-semibold text-white">Live Emergency Map</p>
-        <p className="text-xs text-slate-400">Tracking ambulance, patient, and hospital routing in real time</p>
+      <div className="border-b border-[var(--border)] px-5 py-4">
+        <p className="text-sm font-semibold text-[var(--text)]">Live Emergency Map</p>
+        <p className="text-xs text-[var(--muted)]">Tracking ambulance, patient, and hospital routing in real time</p>
       </div>
       <div className="h-[360px] md:h-[460px]">
         <MapContainer center={[28.6139, 77.209]} zoom={13} scrollWheelZoom={false} className="h-full w-full">

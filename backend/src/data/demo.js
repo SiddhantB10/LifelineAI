@@ -6,6 +6,4 @@ export const demoHospitals = [];
 export const demoAmbulances = [];
 export const demoEmergencies = [];
 export const demoNotifications = [];
-
-export const demoNotifications = [];
 export const demoAnalyticsLogs = [];
