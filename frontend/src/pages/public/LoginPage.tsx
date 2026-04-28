@@ -4,14 +4,16 @@ import { useNavigate } from 'react-router-dom';
 // replaced react-hot-toast usage with window.alert to avoid removed dependency
 import { GlassCard } from '../../components/GlassCard';
 import { PrimaryButton } from '../../components/PrimaryButton';
+import { RoleSelect } from '../../components/RoleSelect';
 import { useAuth } from '../../context/AuthContext';
+import type { Role } from '../../types';
 
 export function LoginPage() {
   const navigate = useNavigate();
   const { login } = useAuth();
   const [email, setEmail] = useState('aarav@example.com');
   const [password, setPassword] = useState('password');
-  const [role, setRole] = useState<'citizen' | 'driver' | 'hospital' | 'operator' | 'admin'>('citizen');
+  const [role, setRole] = useState<Role>('citizen');
 
   async function handleSubmit(event: FormEvent) {
     event.preventDefault();
@@ -34,13 +36,7 @@ export function LoginPage() {
         <form onSubmit={handleSubmit} className="space-y-4">
           <input value={email} onChange={(event) => setEmail(event.target.value)} placeholder="Email" className="w-full rounded-2xl border border-white/10 bg-white/5 px-4 py-3 outline-none" />
           <input value={password} onChange={(event) => setPassword(event.target.value)} type="password" placeholder="Password" className="w-full rounded-2xl border border-white/10 bg-white/5 px-4 py-3 outline-none" />
-          <select value={role} onChange={(event) => setRole(event.target.value as typeof role)} className="w-full rounded-2xl border border-white/10 bg-slate-900 px-4 py-3 outline-none">
-            <option value="citizen">Citizen</option>
-            <option value="driver">Ambulance Driver</option>
-            <option value="hospital">Hospital Staff</option>
-            <option value="operator">Emergency Operator</option>
-            <option value="admin">Government Admin</option>
-          </select>
+          <RoleSelect value={role} onChange={setRole} />
           <PrimaryButton type="submit" className="w-full">Login</PrimaryButton>
         </form>
       </GlassCard>

@@ -4,12 +4,22 @@ import { useNavigate } from 'react-router-dom';
 // replaced react-hot-toast usage with window.alert to avoid removed dependency
 import { GlassCard } from '../../components/GlassCard';
 import { PrimaryButton } from '../../components/PrimaryButton';
+import { RoleSelect } from '../../components/RoleSelect';
 import { useAuth } from '../../context/AuthContext';
+import type { Role } from '../../types';
+
+type SignupFormState = {
+  name: string;
+  email: string;
+  password: string;
+  phone: string;
+  role: Role;
+};
 
 export function SignupPage() {
   const navigate = useNavigate();
   const { signup } = useAuth();
-  const [form, setForm] = useState({ name: '', email: '', password: '', phone: '', role: 'citizen' as const });
+  const [form, setForm] = useState<SignupFormState>({ name: '', email: '', password: '', phone: '', role: 'citizen' });
 
   async function handleSubmit(event: FormEvent) {
     event.preventDefault();
@@ -40,13 +50,7 @@ export function SignupPage() {
               className="w-full rounded-2xl border border-white/10 bg-white/5 px-4 py-3 outline-none"
             />
           ))}
-          <select value={form.role} onChange={(event) => setForm((current) => ({ ...current, role: event.target.value as typeof form.role }))} className="w-full rounded-2xl border border-white/10 bg-slate-900 px-4 py-3 outline-none">
-            <option value="citizen">Citizen</option>
-            <option value="driver">Ambulance Driver</option>
-            <option value="hospital">Hospital Staff</option>
-            <option value="operator">Emergency Operator</option>
-            <option value="admin">Government Admin</option>
-          </select>
+          <RoleSelect value={form.role} onChange={(role) => setForm((current) => ({ ...current, role }))} />
           <PrimaryButton type="submit" className="w-full">Create account</PrimaryButton>
         </form>
       </GlassCard>
