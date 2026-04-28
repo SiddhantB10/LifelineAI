@@ -114,7 +114,7 @@ cd frontend && npm run build        # Creates dist/
 
 ```env
 # Firebase Web Config (from Console)
-VITE_FIREBASE_CONFIG={"apiKey":"...","projectId":"lifeline-ai",...}
+VITE_FIREBASE_CONFIG={"apiKey":"...","projectId":"lifeline-ai-67fac",...}
 
 # FCM VAPID Key (optional, for advanced notifications)
 VITE_FIREBASE_VAPID_KEY=your_vapid_key
@@ -126,6 +126,8 @@ VITE_API_URL=https://us-central1-lifeline-ai-67fac.cloudfunctions.net/api
 GEMINI_API_KEY=your_free_tier_key
 FCM_SERVER_KEY=your_fcm_server_key
 
+```
+
 ## GitHub Secrets for auto-deploy
 
 - `FIREBASE_SERVICE_ACCOUNT`
@@ -133,7 +135,6 @@ FCM_SERVER_KEY=your_fcm_server_key
 - `VITE_FIREBASE_VAPID_KEY`
 - `VITE_API_URL`
 - `GEMINI_API_KEY`
-```
 
 ---
 

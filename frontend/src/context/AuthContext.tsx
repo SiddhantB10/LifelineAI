@@ -1,8 +1,9 @@
 import { createContext, useContext, useEffect, useMemo, useState } from 'react';
 import type { ReactNode } from 'react';
+import { collection, doc, getDocs, limit, query, setDoc, where } from 'firebase/firestore';
 import { Role, UserProfile } from '../types';
-import { demoUsers } from '../data/demo';
-// Authentication will use Firebase Auth (frontend uses `services/firebase.ts`).
+import { api } from '../services/api';
+import { db } from '../services/firebase';
 
 interface AuthContextValue {
   user: UserProfile | null;
@@ -27,7 +28,26 @@ function readStoredUser(): UserProfile | null {
     }
   }
 
-  return demoUsers[0] ?? null;
+  return null;
+}
+
+async function saveUserToFirestore(user: UserProfile): Promise<void> {
+  await setDoc(doc(db, 'users', user.id), user, { merge: true });
+}
+
+async function findUserInFirestore(email: string, role: Role): Promise<UserProfile | null> {
+  const userQuery = query(
+    collection(db, 'users'),
+    where('email', '==', email),
+    where('role', '==', role),
+    limit(1),
+  );
+  const snapshot = await getDocs(userQuery);
+  if (snapshot.empty) {
+    return null;
+  }
+
+  return snapshot.docs[0].data() as UserProfile;
 }
 
 export function AuthProvider({ children }: { children: ReactNode }) {
@@ -45,40 +65,48 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       role: user?.role ?? null,
       loading,
       login: async (email, password, role) => {
-        // Firebase Auth integration will be used here; using demo fallback for now.
-        const fallback = demoUsers.find((entry) => entry.email === email && (!role || entry.role === role));
-        const sessionUser = fallback ?? {
-          id: crypto.randomUUID(),
-          name: email.split('@')[0],
-          phone: '+91 90000 00000',
-          email,
-          role: role ?? 'citizen',
-          created_at: new Date().toISOString(),
-        };
+        const loginRole = role ?? 'citizen';
+        let sessionUser: UserProfile | null = null;
+
+        try {
+          const response = await api.login({ email, password, role: loginRole });
+          sessionUser = (response.user as UserProfile | null) ?? null;
+        } catch {
+          sessionUser = await findUserInFirestore(email, loginRole);
+        }
+
+        if (!sessionUser) {
+          throw new Error('No matching account found in Firestore');
+        }
 
         setUser(sessionUser);
         localStorage.setItem(storageKey, JSON.stringify(sessionUser));
-        console.log('Signed in successfully');
       },
       signup: async (payload) => {
-        // Firebase Auth `createUserWithEmailAndPassword` can be used here; demo fallback used now.
-        const newUser: UserProfile = {
-          id: crypto.randomUUID(),
-          name: payload.name,
-          phone: payload.phone,
-          email: payload.email,
-          role: payload.role,
-          created_at: new Date().toISOString(),
-        };
+        let newUser: UserProfile;
+
+        try {
+          const response = await api.signup(payload);
+          newUser = response.user as UserProfile;
+        } catch {
+          newUser = {
+            id: crypto.randomUUID(),
+            name: payload.name,
+            phone: payload.phone,
+            email: payload.email,
+            role: payload.role,
+            created_at: new Date().toISOString(),
+          };
+        }
+
+        await saveUserToFirestore(newUser);
 
         setUser(newUser);
         localStorage.setItem(storageKey, JSON.stringify(newUser));
-        console.log('Account created');
       },
       logout: () => {
         setUser(null);
         localStorage.removeItem(storageKey);
-        console.log('Signed out');
       },
     }),
     [user, loading],

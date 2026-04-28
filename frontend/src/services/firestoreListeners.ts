@@ -8,6 +8,11 @@ import {
 } from 'firebase/firestore';
 import { db } from './firebase';
 
+type TimestampedRecord = {
+  id: string;
+  created_at?: string;
+};
+
 /**
  * Listen to active emergencies in real-time
  * @param {string} userId - Optional user ID to filter by owner
@@ -117,7 +122,7 @@ export function listenToNotifications(
   return onSnapshot(
     q,
     (snapshot) => {
-      const notifications = snapshot.docs.map((doc) => ({
+      const notifications: TimestampedRecord[] = snapshot.docs.map((doc) => ({
         ...doc.data(),
         id: doc.id,
       }));

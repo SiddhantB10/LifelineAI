@@ -1,5 +1,16 @@
 const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:4000';
 
+export interface ApiAuthResponse {
+  message: string;
+  user: unknown;
+  token: string | null;
+}
+
+export interface ApiEmergencyResponse {
+  message: string;
+  emergency: unknown;
+}
+
 async function request<T>(path: string, options: RequestInit = {}): Promise<T> {
   const response = await fetch(`${API_URL}${path}`, {
     headers: {
@@ -18,9 +29,9 @@ async function request<T>(path: string, options: RequestInit = {}): Promise<T> {
 }
 
 export const api = {
-  signup: (payload: unknown) => request('/auth/signup', { method: 'POST', body: JSON.stringify(payload) }),
-  login: (payload: unknown) => request('/auth/login', { method: 'POST', body: JSON.stringify(payload) }),
-  createEmergency: (payload: unknown) => request('/sos/create', { method: 'POST', body: JSON.stringify(payload) }),
+  signup: (payload: unknown) => request<ApiAuthResponse>('/signup', { method: 'POST', body: JSON.stringify(payload) }),
+  login: (payload: unknown) => request<ApiAuthResponse>('/login', { method: 'POST', body: JSON.stringify(payload) }),
+  createEmergency: (payload: unknown) => request<ApiEmergencyResponse>('/emergencies', { method: 'POST', body: JSON.stringify(payload) }),
   updateProfile: (payload: unknown) => request('/profile/update', { method: 'POST', body: JSON.stringify(payload) }),
   severityCheck: (payload: unknown) => request('/ai/severity', { method: 'POST', body: JSON.stringify(payload) }),
   hospitalMatch: (payload: unknown) => request('/ai/hospital-match', { method: 'POST', body: JSON.stringify(payload) }),
