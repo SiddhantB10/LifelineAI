@@ -2,7 +2,7 @@ import { initializeApp } from 'firebase/app';
 import { getAuth } from 'firebase/auth';
 import { getFirestore } from 'firebase/firestore';
 import { getStorage } from 'firebase/storage';
-import { getMessaging } from 'firebase/messaging';
+import { getMessaging, isSupported, type Messaging } from 'firebase/messaging';
 
 const raw = import.meta.env.VITE_FIREBASE_CONFIG || '{}';
 let firebaseConfig = {};
@@ -12,8 +12,23 @@ try {
   console.warn('VITE_FIREBASE_CONFIG is not valid JSON');
 }
 
-const app = initializeApp(firebaseConfig);
+export const app = initializeApp(firebaseConfig);
 export const auth = getAuth(app);
 export const db = getFirestore(app);
 export const storage = getStorage(app);
-export const messaging = getMessaging(app);
+
+let messagingInstance: Messaging | null = null;
+
+export async function getMessagingInstance(): Promise<Messaging | null> {
+  if (messagingInstance) {
+    return messagingInstance;
+  }
+
+  const supported = await isSupported();
+  if (!supported) {
+    return null;
+  }
+
+  messagingInstance = getMessaging(app);
+  return messagingInstance;
+}

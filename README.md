@@ -25,6 +25,14 @@ This workspace contains a production-oriented full-stack scaffold with:
 
 ## Deployment
 
-- Frontend: Firebase Hosting
-- Backend: Firebase Functions
+- GitHub push to `main` triggers Firebase auto-deploy via `.github/workflows/firebase-deploy.yml`
+- Frontend: Firebase Hosting target `web` -> `lifelineai-100`
+- Backend: Firebase Functions in `backend/functions`
 - Database/Auth: Firestore + Firebase Auth
+
+## Required Cloud Setup
+
+- Firebase project: `lifeline-ai-67fac`
+- Blaze plan enabled for Functions deploys
+- Firestore API enabled before seeding demo data
+- GitHub repository secrets configured for Firebase and Gemini

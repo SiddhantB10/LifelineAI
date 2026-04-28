@@ -1,17 +1,14 @@
-// firebase-messaging-sw.js
-// Service Worker for Firebase Cloud Messaging
-// Place this in public/ folder
-// This enables receiving notifications when app is in background
+importScripts('https://www.gstatic.com/firebasejs/12.12.1/firebase-app-compat.js');
+importScripts('https://www.gstatic.com/firebasejs/12.12.1/firebase-messaging-compat.js');
 
-importScripts('https://www.gstatic.com/firebasejs/10.16.0/firebase-app.js');
-importScripts('https://www.gstatic.com/firebasejs/10.16.0/firebase-messaging.js');
-
-// Initialize Firebase (minimal config - will use sender ID from FCM)
 firebase.initializeApp({
-  apiKey: 'AIzaSyXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX',
-  projectId: 'lifeline-ai',
-  messagingSenderId: '123456789000',
-  appId: '1:123456789000:web:abcdef1234567890abcdef',
+  apiKey: 'AIzaSyBQCgNi-C-nX0Pwk5Y5Ys1vxtauTerinqg',
+  authDomain: 'lifeline-ai-67fac.firebaseapp.com',
+  projectId: 'lifeline-ai-67fac',
+  storageBucket: 'lifeline-ai-67fac.firebasestorage.app',
+  messagingSenderId: '263937681218',
+  appId: '1:263937681218:web:704c95f56c82e567d54adb',
+  measurementId: 'G-5J5MN9LPET',
 });
 
 const messaging = firebase.messaging();
@@ -25,8 +22,8 @@ messaging.onBackgroundMessage((payload) => {
   const notificationTitle = notification?.title || 'Lifeline AI Alert';
   const notificationOptions = {
     body: notification?.body || 'New emergency update',
-    icon: notification?.icon || '/icon-192x192.png',
-    badge: '/badge-72x72.png',
+    icon: notification?.icon || '/vite.svg',
+    badge: '/vite.svg',
     tag: 'lifeline-notification',
     data: data || {},
     vibrate: [200, 100, 200],
@@ -36,7 +33,6 @@ messaging.onBackgroundMessage((payload) => {
   return self.registration.showNotification(notificationTitle, notificationOptions);
 });
 
-// Handle notification clicks
 self.addEventListener('notificationclick', (event) => {
   console.log('[firebase-messaging-sw.js] Notification clicked');
   event.notification.close();
@@ -62,7 +58,6 @@ self.addEventListener('notificationclick', (event) => {
   );
 });
 
-// Handle notification dismissal
 self.addEventListener('notificationclose', (event) => {
   console.log('[firebase-messaging-sw.js] Notification closed');
 });

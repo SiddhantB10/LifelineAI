@@ -1,4 +1,4 @@
-import { messaging } from './firebase';
+import { getMessagingInstance } from './firebase';
 import { getToken, onMessage } from 'firebase/messaging';
 
 /**
@@ -14,11 +14,23 @@ export async function initializeFCM(): Promise<string | null> {
       return null;
     }
 
+    const permissionGranted = await requestNotificationPermission();
+    if (!permissionGranted) {
+      console.log('Notification permission denied');
+      return null;
+    }
+
     // Register service worker
     try {
       await navigator.serviceWorker.register('/firebase-messaging-sw.js');
     } catch (error) {
       console.warn('Service worker registration skipped (may be already registered)', error);
+    }
+
+    const messaging = await getMessagingInstance();
+    if (!messaging) {
+      console.warn('Firebase Messaging is not supported in this browser');
+      return null;
     }
 
     // Get FCM token
@@ -46,31 +58,38 @@ export async function initializeFCM(): Promise<string | null> {
  */
 export function setupForegroundMessageHandler(
   callback: (payload: any) => void
-): void {
-  onMessage(messaging, (payload) => {
-    console.log('Foreground message received:', payload);
+): Promise<void> {
+  return getMessagingInstance().then((messaging) => {
+    if (!messaging) {
+      return;
+    }
 
-    // payload has: notification { title, body, icon } and data { custom fields }
-    const { notification, data } = payload;
+    onMessage(messaging, (payload) => {
+      console.log('Foreground message received:', payload);
 
-    if (notification) {
-      // Show custom UI notification (e.g., toast, alert, in-app banner)
-      callback({
-        title: notification.title,
-        body: notification.body,
-        icon: notification.icon,
-        data,
-        timestamp: new Date().toISOString(),
-      });
+      // payload has: notification { title, body, icon } and data { custom fields }
+      const { notification, data } = payload;
 
-      // Optional: Also show browser notification
-      if ('Notification' in window && Notification.permission === 'granted') {
-        new Notification(notification.title || 'Lifeline AI', {
+      if (notification) {
+        // Show custom UI notification (e.g., toast, alert, in-app banner)
+        callback({
+          title: notification.title,
           body: notification.body,
           icon: notification.icon,
+          data,
+          timestamp: new Date().toISOString(),
         });
+
+        // Optional: Also show browser notification
+        if ('Notification' in window && Notification.permission === 'granted') {
+          new Notification(notification.title || 'Lifeline AI', {
+            body: notification.body,
+            icon: notification.icon,
+          });
+        }
       }
     }
+    });
   });
 }
 

@@ -36,7 +36,6 @@ class LifelineAIApp extends StatelessWidget {
           seedColor: const Color(0xFFDC2626), // Red for emergency theme
           brightness: Brightness.light,
         ),
-        fontFamily: 'Poppins',
       ),
       home: const AuthChecker(),
     );

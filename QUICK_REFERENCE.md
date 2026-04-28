@@ -96,7 +96,10 @@ cd frontend && npm run dev          # http://localhost:5173
 cd ../backend/functions && npm run serve  # emulator
 
 # Deploy
-firebase deploy --only functions,hosting
+git push origin main
+
+# Manual deploy fallback
+firebase deploy --only functions,hosting:web
 
 # Seed database
 cd backend/functions && npm run seed
@@ -117,11 +120,19 @@ VITE_FIREBASE_CONFIG={"apiKey":"...","projectId":"lifeline-ai",...}
 VITE_FIREBASE_VAPID_KEY=your_vapid_key
 
 # API URL (for local dev)
-VITE_API_URL=http://localhost:5001/lifeline-ai/us-central1
+VITE_API_URL=https://us-central1-lifeline-ai-67fac.cloudfunctions.net/api
 
 # AI API Keys
 GEMINI_API_KEY=your_free_tier_key
 FCM_SERVER_KEY=your_fcm_server_key
+
+## GitHub Secrets for auto-deploy
+
+- `FIREBASE_SERVICE_ACCOUNT`
+- `VITE_FIREBASE_CONFIG`
+- `VITE_FIREBASE_VAPID_KEY`
+- `VITE_API_URL`
+- `GEMINI_API_KEY`
 ```
 
 ---
