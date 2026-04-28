@@ -55,14 +55,24 @@ jobs:
       - name: Install Firebase CLI
         run: npm install -g firebase-tools
 
-      - name: Prepare Firebase service account
-        env:
-          FIREBASE_SERVICE_ACCOUNT: ${{ secrets.FIREBASE_SERVICE_ACCOUNT }}
-        run: |
-          echo "$FIREBASE_SERVICE_ACCOUNT" > "$RUNNER_TEMP/firebase-service-account.json"
-          echo "GOOGLE_APPLICATION_CREDENTIALS=$RUNNER_TEMP/firebase-service-account.json" >> "$GITHUB_ENV"
-
       - name: Deploy to Firebase
         env:
           FIREBASE_PROJECT: lifeline-ai-67fac
-        run: firebase deploy --project "$FIREBASE_PROJECT" --only functions,hosting:web
+          FIREBASE_SERVICE_ACCOUNT: ${{ secrets.FIREBASE_SERVICE_ACCOUNT }}
+          FIREBASE_TOKEN: ${{ secrets.FIREBASE_TOKEN }}
+        run: |
+          if [[ "$FIREBASE_SERVICE_ACCOUNT" == {* ]]; then
+            echo "Using FIREBASE_SERVICE_ACCOUNT as JSON"
+            echo "$FIREBASE_SERVICE_ACCOUNT" > "$RUNNER_TEMP/firebase-service-account.json"
+            export GOOGLE_APPLICATION_CREDENTIALS="$RUNNER_TEMP/firebase-service-account.json"
+            firebase deploy --project "$FIREBASE_PROJECT" --only functions,hosting:web --non-interactive || firebase deploy --project "$FIREBASE_PROJECT" --only hosting:web --non-interactive
+          elif [ -n "$FIREBASE_TOKEN" ]; then
+            echo "Using FIREBASE_TOKEN"
+            firebase deploy --project "$FIREBASE_PROJECT" --only functions,hosting:web --token "$FIREBASE_TOKEN" --non-interactive || firebase deploy --project "$FIREBASE_PROJECT" --only hosting:web --token "$FIREBASE_TOKEN" --non-interactive
+          elif [ -n "$FIREBASE_SERVICE_ACCOUNT" ]; then
+            echo "FIREBASE_SERVICE_ACCOUNT is not JSON, treating as token"
+            firebase deploy --project "$FIREBASE_PROJECT" --only functions,hosting:web --token "$FIREBASE_SERVICE_ACCOUNT" --non-interactive || firebase deploy --project "$FIREBASE_PROJECT" --only hosting:web --token "$FIREBASE_SERVICE_ACCOUNT" --non-interactive
+          else
+            echo "No Firebase credentials found!"
+            exit 1
+          fi
