@@ -62,7 +62,7 @@ export function RoleSelect({ value, onChange }: RoleSelectProps) {
       {open ? (
         <ul
           role="listbox"
-          className="absolute z-30 mt-2 max-h-64 w-full overflow-auto rounded-2xl border border-white/10 bg-slate-950/95 p-1 shadow-2xl shadow-black/40"
+          className="absolute z-50 mt-2 max-h-64 w-full overflow-auto rounded-2xl border border-white/10 bg-slate-900 p-1 shadow-[0_8px_30px_rgb(0,0,0,0.8)]"
         >
           {roleOptions.map((option) => {
             const isActive = option.value === value;

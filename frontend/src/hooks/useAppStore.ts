@@ -1,7 +1,50 @@
 import { create } from 'zustand';
+import { UserProfile, EmergencyRecord, AmbulanceRecord, HospitalRecord } from '../types';
+
+interface Notification {
+  id: string;
+  message: string;
+  timestamp: string;
+  read: boolean;
+}
+
+interface AppState {
+  currentUser: UserProfile | null;
+  setCurrentUser: (user: UserProfile | null) => void;
+  
+  activeEmergencies: EmergencyRecord[];
+  setActiveEmergencies: (emergencies: EmergencyRecord[]) => void;
+  addEmergency: (emergency: EmergencyRecord) => void;
+  updateEmergency: (id: string, updates: Partial<EmergencyRecord>) => void;
+  
+  availableAmbulances: AmbulanceRecord[];
+  setAvailableAmbulances: (ambulances: AmbulanceRecord[]) => void;
+  
+  hospitals: HospitalRecord[];
+  setHospitals: (hospitals: HospitalRecord[]) => void;
+  
+  notifications: Notification[];
+  setNotifications: (notifications: Notification[]) => void;
+  addNotification: (notification: Notification) => void;
+  
+  isLoading: boolean;
+  setIsLoading: (loading: boolean) => void;
+  
+  error: Error | string | null;
+  setError: (error: Error | string | null) => void;
+  clearError: () => void;
+  
+  userLocation: { lat: number; lng: number };
+  setUserLocation: (location: { lat: number; lng: number }) => void;
+  
+  realtimeEnabled: boolean;
+  setRealtimeEnabled: (enabled: boolean) => void;
+  
+  reset: () => void;
+}
 
 // Global app state using Zustand
-export const useAppStore = create((set) => ({
+export const useAppStore = create<AppState>((set) => ({
   // User state
   currentUser: null,
   setCurrentUser: (user) => set({ currentUser: user }),

@@ -65,7 +65,7 @@ export function PublicLayout() {
         </div>
       </header>
 
-      <main className="relative z-10">
+      <main className="relative z-20">
         <Outlet />
       </main>
 
