@@ -5,11 +5,12 @@ import { getHospitalLoadSummary } from '../services/dispatch.js';
 export async function analytics(req, res) {
   res.json({
     metrics: {
-      total_users: demoUsers.length,
+      total_users: 0,
       total_emergencies: demoEmergencies.length,
       critical_cases: demoEmergencies.filter((item) => item.severity === 'Critical').length,
       hospitals_online: demoHospitals.length,
       ambulances_online: demoAmbulances.length,
+      status: 'Demo mode: Connect to Firebase for live metrics',
       top_accident_state: datasetInsights.roadAccidents.topStatesByTotal[0] ?? null,
       peak_traffic_window: datasetInsights.traffic.averagesByTime.slice().sort((left, right) => right.avgWaitingTime - left.avgWaitingTime)[0] ?? null,
       ambulance_demand_peak: datasetInsights.ambulanceDemand.timeSlotBreakdown[0] ?? null,

@@ -16,54 +16,65 @@ const testimonials = [
 
 export function HomePage() {
   return (
-    <div>
-      <section className="mx-auto max-w-7xl px-4 py-16 md:px-6 md:py-24">
-        <div className="grid items-center gap-12 lg:grid-cols-[1.08fr_0.92fr]">
+    <div className="bg-slate-950">
+      {/* Hero Section */}
+      <section className="mx-auto max-w-7xl px-responsive-sm py-responsive-lg md:px-responsive-md md:py-responsive-xl">
+        <div className="grid items-center gap-responsive-lg lg:gap-responsive-xl lg:grid-cols-[1.08fr_0.92fr]">
           <div>
-            <div className="mb-5 inline-flex items-center gap-2 rounded-full border border-red-500/20 bg-red-500/10 px-4 py-2 text-xs font-semibold uppercase tracking-[0.32em] text-red-200">
-              <Sparkles className="h-4 w-4" />
-              Emergency response intelligence
+            <div className="mb-responsive-sm inline-flex items-center gap-2 rounded-full border border-red-500/20 bg-red-500/10 px-responsive-sm py-2 text-xs xs:text-sm font-semibold uppercase tracking-[0.32em] text-red-200">
+              <Sparkles className="h-3 w-3 xs:h-4 xs:w-4 flex-shrink-0" />
+              <span>Emergency response intelligence</span>
             </div>
 
-            <h1 className="max-w-4xl text-5xl font-semibold tracking-tight text-white md:text-7xl">Smart emergency response for the golden hour.</h1>
+            <h1 className="text-responsive-4xl xs:text-responsive-5xl font-semibold tracking-tight text-white mt-responsive-md">
+              Smart emergency response for the golden hour.
+            </h1>
 
-            <p className="mt-6 max-w-2xl text-base leading-8 text-slate-300 md:text-lg">LIFELINE AI connects citizens, ambulances, hospitals, and city operators in one life-saving network with live tracking, AI severity analysis, and intelligent hospital routing.</p>
+            <p className="mt-responsive-md max-w-2xl text-responsive-base xs:text-responsive-lg leading-7 xs:leading-8 text-slate-300">
+              LIFELINE AI connects citizens, ambulances, hospitals, and city operators in one life-saving network with live tracking, AI severity analysis, and intelligent hospital routing.
+            </p>
 
-            <div className="mt-8 flex flex-wrap gap-4">
+            <div className="mt-responsive-lg flex flex-col xs:flex-row gap-responsive-sm xs:flex-wrap">
               <NavLink to="/signup">
                 <PrimaryButton>Launch Demo <ArrowRight className="h-4 w-4" /></PrimaryButton>
               </NavLink>
-              <NavLink to="/features" className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-5 py-3 text-sm font-semibold text-white transition hover:bg-white/10">
+              <NavLink to="/features" className="inline-flex items-center justify-center xs:justify-start gap-2 rounded-full border border-white/10 bg-white/5 px-responsive-md py-responsive-sm text-xs xs:text-sm font-semibold text-white transition hover:bg-white/10">
                 Explore features
               </NavLink>
             </div>
 
-            <div className="mt-10 grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
-              {demoStats.map((stat) => (
-                <StatCard key={stat.label} {...stat} />
-              ))}
+            <div className="mt-responsive-lg grid gap-responsive-sm xs:gap-responsive-md sm:grid-cols-2 xl:grid-cols-4">
+              {demoStats.length > 0 ? (
+                demoStats.map((stat) => (
+                  <StatCard key={stat.label} {...stat} />
+                ))
+              ) : (
+                <div className="col-span-full rounded-2xl border border-white/10 bg-white/5 p-responsive-md text-center text-slate-400">
+                  <p className="text-sm">Real-time statistics will appear here once the system is live.</p>
+                </div>
+              )}
             </div>
           </div>
 
-          <div className="space-y-5">
+          <div className="space-y-responsive-md mx-auto w-full max-w-md lg:max-w-none">
             <HeroGlobe />
             <GlassCard className="relative overflow-hidden">
               <div className="absolute inset-0 bg-gradient-to-br from-red-500/10 via-transparent to-blue-500/10" />
-              <div className="relative grid gap-4 md:grid-cols-2">
+              <div className="relative grid gap-responsive-sm md:gap-responsive-md md:grid-cols-2">
                 <div>
                   <p className="text-xs uppercase tracking-[0.3em] text-slate-400">Operator overview</p>
-                  <div className="mt-3 text-3xl font-semibold text-white">16 active emergencies</div>
-                  <p className="mt-2 text-sm text-slate-300">Critical incidents are automatically prioritized by severity, distance, and specialty availability.</p>
+                  <div className="mt-responsive-sm text-2xl xs:text-3xl font-semibold text-white">16 active emergencies</div>
+                  <p className="mt-responsive-sm text-xs xs:text-sm text-slate-300">Critical incidents are automatically prioritized by severity, distance, and specialty availability.</p>
                 </div>
-                <div className="rounded-3xl border border-white/10 bg-slate-950/60 p-4">
+                <div className="rounded-3xl border border-white/10 bg-slate-950/60 p-responsive-sm">
                   <div className="flex items-center justify-between text-xs text-slate-400">
                     <span>Next ambulance ETA</span>
-                    <span className="text-emerald-300">4 min</span>
+                    <span className="text-emerald-300 font-semibold">4 min</span>
                   </div>
-                  <div className="mt-4 h-2 overflow-hidden rounded-full bg-white/10">
+                  <div className="mt-responsive-sm h-2 overflow-hidden rounded-full bg-white/10">
                     <div className="h-full w-3/4 rounded-full bg-gradient-to-r from-red-500 to-orange-400" />
                   </div>
-                  <p className="mt-3 text-sm text-slate-300">Route optimization and hospital matching are re-evaluated every few seconds.</p>
+                  <p className="mt-responsive-sm text-xs xs:text-sm text-slate-300">Route optimization and hospital matching are re-evaluated every few seconds.</p>
                 </div>
               </div>
             </GlassCard>
@@ -71,25 +82,25 @@ export function HomePage() {
         </div>
       </section>
 
-      <section className="mx-auto max-w-7xl px-4 pb-8 md:px-6 md:pb-10">
+      <section className="mx-auto max-w-7xl px-responsive-sm py-responsive-md md:px-responsive-md md:py-responsive-lg">
         <EmergencyMap />
       </section>
 
-      <section className="mx-auto max-w-7xl px-4 py-16 md:px-6">
+      <section className="mx-auto max-w-7xl px-responsive-sm py-responsive-lg md:px-responsive-md md:py-responsive-xl">
         <SectionHeading
           eyebrow="Why LIFELINE AI matters"
           title="Built to remove the delays that cost lives"
           description="Every interaction is designed around urgency: one-tap SOS, live ETA updates, family notifications, hospital load checks, and municipal-level analytics."
         />
-        <div className="mt-8 grid gap-5 md:grid-cols-2 xl:grid-cols-4">
+        <div className="mt-responsive-lg grid gap-responsive-md md:gap-responsive-lg md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-4">
           {Object.entries(dashboardModules).map(([role, modules]) => (
             <GlassCard key={role}>
               <p className="text-xs uppercase tracking-[0.3em] text-red-300/80">{role}</p>
-              <ul className="mt-4 space-y-3 text-sm text-slate-300">
+              <ul className="mt-responsive-md space-y-responsive-sm text-xs xs:text-sm text-slate-300">
                 {modules.map((module) => (
-                  <li key={module} className="flex items-center gap-3">
-                    <span className="h-2 w-2 rounded-full bg-red-400" />
-                    {module}
+                  <li key={module} className="flex items-start gap-responsive-sm">
+                    <span className="h-2 w-2 rounded-full bg-red-400 flex-shrink-0 mt-1.5" />
+                    <span>{module}</span>
                   </li>
                 ))}
               </ul>
@@ -98,34 +109,42 @@ export function HomePage() {
         </div>
       </section>
 
-      <section className="mx-auto max-w-7xl px-4 py-16 md:px-6">
-        <div className="grid gap-5 lg:grid-cols-3">
+      <section className="mx-auto max-w-7xl px-responsive-sm py-responsive-lg md:px-responsive-md md:py-responsive-xl">
+        <div className="grid gap-responsive-md lg:gap-responsive-lg lg:grid-cols-3">
           {testimonials.map((item) => (
             <GlassCard key={item.name}>
-              <div className="mb-4 flex items-center gap-3">
-                <div className="flex h-11 w-11 items-center justify-center rounded-2xl bg-red-500/15 text-red-200">{item.name.slice(0, 1)}</div>
-                <div>
-                  <div className="font-semibold text-white">{item.name}</div>
-                  <div className="text-xs text-slate-400">{item.role}</div>
+              <div className="mb-responsive-md flex items-center gap-responsive-sm">
+                <div className="flex h-10 w-10 xs:h-11 xs:w-11 items-center justify-center rounded-2xl bg-red-500/15 text-red-200 flex-shrink-0 text-sm xs:text-base font-semibold">
+                  {item.name.slice(0, 1)}
+                </div>
+                <div className="min-w-0">
+                  <div className="font-semibold text-white text-sm xs:text-base truncate">{item.name}</div>
+                  <div className="text-xs text-slate-400 truncate">{item.role}</div>
                 </div>
               </div>
-              <p className="text-sm leading-7 text-slate-300">“{item.quote}”</p>
+              <p className="text-xs xs:text-sm leading-6 xs:leading-7 text-slate-300">"{item.quote}"</p>
             </GlassCard>
           ))}
         </div>
       </section>
 
-      <section className="mx-auto max-w-7xl px-4 pb-20 md:px-6">
+      <section className="mx-auto max-w-7xl px-responsive-sm pb-responsive-xl md:px-responsive-md md:pb-responsive-xl">
         <GlassCard className="overflow-hidden">
-          <div className="grid gap-6 md:grid-cols-[1.2fr_0.8fr] md:items-center">
+          <div className="grid gap-responsive-md md:gap-responsive-lg md:grid-cols-[1.2fr_0.8fr] md:items-center">
             <div>
               <p className="text-xs uppercase tracking-[0.3em] text-red-300/80">Smart city readiness</p>
-              <h3 className="mt-3 text-3xl font-semibold text-white">Command centers, hospitals, and ambulances sharing one response fabric.</h3>
-              <p className="mt-4 max-w-2xl text-sm leading-7 text-slate-300">Use the platform to reduce arrival time, improve triage, detect hotspots, and keep families informed from the first alert to hospital handoff.</p>
+              <h3 className="mt-responsive-sm text-responsive-2xl xs:text-responsive-3xl font-semibold text-white">
+                Command centers, hospitals, and ambulances sharing one response fabric.
+              </h3>
+              <p className="mt-responsive-md max-w-2xl text-xs xs:text-sm leading-6 xs:leading-7 text-slate-300">
+                Use the platform to reduce arrival time, improve triage, detect hotspots, and keep families informed from the first alert to hospital handoff.
+              </p>
             </div>
-            <div className="flex flex-wrap gap-3 justify-start md:justify-end">
+            <div className="flex flex-wrap gap-responsive-sm justify-start md:justify-end">
               {['AI severity', 'Live GPS', 'Hospital load', 'Family alerts', 'Hotspot heatmap'].map((label) => (
-                <span key={label} className="rounded-full border border-white/10 bg-white/5 px-4 py-2 text-sm text-slate-200">{label}</span>
+                <span key={label} className="rounded-full border border-white/10 bg-white/5 px-responsive-sm py-2 text-xs xs:text-sm text-slate-200 whitespace-nowrap">
+                  {label}
+                </span>
               ))}
             </div>
           </div>

@@ -25,7 +25,9 @@ exports.api = functions.https.onRequest(async (req, res) => {
         created_at: new Date().toISOString(),
       };
       await userRef.set(user);
-      return res.status(201).json({ message: 'Account created', user, token: `demo.${user.id}.token` });
+      // WARNING: Should generate Firebase Auth token here
+      // In production, use: const token = await admin.auth().createCustomToken(user.id);
+      return res.status(201).json({ message: 'Account created', user, warning: 'Use Firebase Auth in production' });
     }
 
     // AUTH: login
@@ -39,7 +41,9 @@ exports.api = functions.https.onRequest(async (req, res) => {
         const all = await db.collection('users').limit(1).get();
         user = all.empty ? null : all.docs[0].data();
       }
-      return res.json({ message: 'Signed in', user, token: user ? `demo.${user.id}.token` : null });
+      // WARNING: Should generate Firebase Auth token here
+      // In production, use: const token = user ? await admin.auth().createCustomToken(user.id) : null;
+      return res.json({ message: 'Signed in', user, warning: 'Use Firebase Auth in production' });
     }
 
     // CREATE emergency
@@ -66,7 +70,7 @@ exports.api = functions.https.onRequest(async (req, res) => {
       // write a notification
       const notifRef = db.collection('notifications').doc();
       await notifRef.set({ id: notifRef.id, user_id, title: 'Ambulance assigned', message: 'Ambulance en route', read: false, created_at: new Date().toISOString() });
-      return res.status(201).json({ message: 'Emergency created', emergency });
+      return res.status(201).json({ message: 'Emergency created - Database only, no auth tokens in this endpoint', emergency });
     }
 
     // GET emergency by id
@@ -92,7 +96,7 @@ exports.api = functions.https.onRequest(async (req, res) => {
       await ambRef.update({ status: 'Busy' }).catch(() => {});
       await emRef.update({ status: 'En Route', assigned_ambulance_id: ambulance_id }).catch(() => {});
       const [ambDoc, emDoc] = await Promise.all([ambRef.get(), emRef.get()]);
-      return res.json({ message: 'Request accepted', ambulance: ambDoc.exists ? ambDoc.data() : null, emergency: emDoc.exists ? emDoc.data() : null });
+      return res.json({ message: 'Request accepted - Demo mode', ambulance: ambDoc.exists ? ambDoc.data() : null, emergency: emDoc.exists ? emDoc.data() : null, warning: 'Integrate with proper authentication in production' });
     }
 
     // DRIVER: update location
@@ -101,7 +105,7 @@ exports.api = functions.https.onRequest(async (req, res) => {
       const ambRef = db.collection('ambulances').doc(ambulance_id);
       await ambRef.update({ lat: Number(lat), lng: Number(lng) }).catch(() => {});
       const amb = (await ambRef.get()).data();
-      return res.json({ message: 'Location updated', ambulance: amb });
+      return res.json({ message: 'Location updated - Demo mode', ambulance: amb, warning: 'Should verify driver authentication in production' });
     }
 
     // DRIVER: update status
@@ -110,7 +114,7 @@ exports.api = functions.https.onRequest(async (req, res) => {
       const emRef = db.collection('emergencies').doc(emergency_id);
       await emRef.update({ status }).catch(() => {});
       const em = (await emRef.get()).data();
-      return res.json({ message: 'Status updated', emergency: em });
+      return res.json({ message: 'Status updated - Demo mode', emergency: em, warning: 'Should verify driver authentication in production' });
     }
 
     return res.status(404).json({ message: 'Unknown route', path, method: req.method });
