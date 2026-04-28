@@ -21,8 +21,12 @@ jobs:
           node-version: 20
           cache: npm
 
-      - name: Install dependencies
+      - name: Install root dependencies
         run: npm ci
+
+      - name: Install functions dependencies
+        run: npm ci
+        working-directory: backend/functions
 
       - name: Prepare frontend environment
         env:
@@ -31,23 +35,19 @@ jobs:
           VITE_API_URL: ${{ secrets.VITE_API_URL }}
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
         run: |
-          cat > frontend/.env <<EOF
-          VITE_FIREBASE_CONFIG=$VITE_FIREBASE_CONFIG
-          VITE_FIREBASE_VAPID_KEY=$VITE_FIREBASE_VAPID_KEY
-          VITE_API_URL=$VITE_API_URL
-          GEMINI_API_KEY=$GEMINI_API_KEY
-          FCM_SERVER_KEY=not_required_when_using_admin_sdk
-          EOF
+          echo "VITE_FIREBASE_CONFIG=${VITE_FIREBASE_CONFIG}" > frontend/.env
+          echo "VITE_FIREBASE_VAPID_KEY=${VITE_FIREBASE_VAPID_KEY}" >> frontend/.env
+          echo "VITE_API_URL=${VITE_API_URL}" >> frontend/.env
+          echo "GEMINI_API_KEY=${GEMINI_API_KEY}" >> frontend/.env
+          echo "FCM_SERVER_KEY=not_required_when_using_admin_sdk" >> frontend/.env
 
       - name: Prepare functions environment
         env:
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
         run: |
-          cat > backend/functions/.env <<EOF
-          GEMINI_API_KEY=$GEMINI_API_KEY
-          FCM_SERVER_KEY=not_required_when_using_admin_sdk
-          PROJECT_ID=lifeline-ai-67fac
-          EOF
+          echo "GEMINI_API_KEY=${GEMINI_API_KEY}" > backend/functions/.env
+          echo "FCM_SERVER_KEY=not_required_when_using_admin_sdk" >> backend/functions/.env
+          echo "PROJECT_ID=lifeline-ai-67fac" >> backend/functions/.env
 
       - name: Build frontend
         run: npm run build --workspace frontend
