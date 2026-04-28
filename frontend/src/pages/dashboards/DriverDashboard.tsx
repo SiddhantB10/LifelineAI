@@ -5,8 +5,8 @@ import { demoAmbulances, demoEmergencies } from '../../data/demo';
 import { useInterval } from '../../hooks/useInterval';
 
 export function DriverDashboard() {
-  const active = demoEmergencies[0];
-  const ambulance = demoAmbulances[0];
+  const active = demoEmergencies.length > 0 ? demoEmergencies[0] : null;
+  const ambulance = demoAmbulances.length > 0 ? demoAmbulances[0] : null;
   const [gpsBeat, setGpsBeat] = useState(0);
 
   useInterval(() => {
@@ -17,16 +17,24 @@ export function DriverDashboard() {
     <div className="grid gap-5 xl:grid-cols-[0.95fr_1.05fr]">
       <GlassCard>
         <p className="text-xs uppercase tracking-[0.3em] text-slate-400">New request</p>
-        <h2 className="mt-3 text-3xl font-semibold text-white">{active.type}</h2>
-        <p className="mt-3 text-sm leading-7 text-slate-300">{active.description}</p>
-        <div className="mt-5 grid gap-3 sm:grid-cols-2">
-          <div className="rounded-2xl border border-white/10 bg-white/5 p-4 text-sm text-slate-300">ETA to patient: {active.etaMinutes} min</div>
-          <div className="rounded-2xl border border-white/10 bg-white/5 p-4 text-sm text-slate-300">Assigned ambulance: {ambulance.name}</div>
-        </div>
-        <div className="mt-5 flex flex-wrap gap-3">
-          <PrimaryButton>Accept request</PrimaryButton>
-          <button className="rounded-full border border-white/10 bg-white/5 px-5 py-3 text-sm font-semibold text-white">Navigate</button>
-        </div>
+        {active && ambulance ? (
+          <>
+            <h2 className="mt-3 text-responsive-2xl xs:text-responsive-3xl font-semibold text-white">{active.type}</h2>
+            <p className="mt-3 text-xs xs:text-sm leading-6 text-slate-300">{active.description}</p>
+            <div className="mt-5 grid gap-3 sm:grid-cols-2">
+              <div className="rounded-2xl border border-white/10 bg-white/5 p-responsive-sm text-xs xs:text-sm text-slate-300">ETA to patient: {active.etaMinutes} min</div>
+              <div className="rounded-2xl border border-white/10 bg-white/5 p-responsive-sm text-xs xs:text-sm text-slate-300">Assigned ambulance: {ambulance.name}</div>
+            </div>
+            <div className="mt-5 flex flex-wrap gap-responsive-sm">
+              <PrimaryButton>Accept request</PrimaryButton>
+              <button className="rounded-full border border-white/10 bg-white/5 px-4 xs:px-5 py-2 xs:py-3 text-xs xs:text-sm font-semibold text-white">Navigate</button>
+            </div>
+          </>
+        ) : (
+          <div className="mt-4 rounded-2xl border border-white/10 bg-white/5 p-responsive-md text-center text-slate-400">
+            <p className="text-sm">No active requests at the moment. Waiting for emergency dispatch...</p>
+          </div>
+        )}
       </GlassCard>
 
       <div className="grid gap-5">

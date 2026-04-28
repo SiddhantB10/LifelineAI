@@ -19,6 +19,10 @@ export function detectSeverity({ text = '', voiceTranscript = '' } = {}) {
 }
 
 export function matchHospital({ lat = 0, lng = 0, specialty = 'Emergency', severity = 'Medium' } = {}) {
+  if (demoHospitals.length === 0) {
+    return null; // No hospitals available - should query Firebase in production
+  }
+
   const trafficPressure = datasetInsights.traffic.averagesByTime.reduce((max, entry) => Math.max(max, entry.avgWaitingTime), 0);
   const ranked = [...demoHospitals]
     .map((hospital) => {
@@ -33,7 +37,7 @@ export function matchHospital({ lat = 0, lng = 0, specialty = 'Emergency', sever
     })
     .sort((left, right) => right.score - left.score);
 
-  return ranked[0];
+  return ranked[0] ?? null;
 }
 
 export function detectSpam({ description = '', repeatCount = 0 } = {}) {

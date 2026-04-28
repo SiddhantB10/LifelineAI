@@ -11,8 +11,8 @@ import type { Role } from '../../types';
 export function LoginPage() {
   const navigate = useNavigate();
   const { login } = useAuth();
-  const [email, setEmail] = useState('aarav@example.com');
-  const [password, setPassword] = useState('password');
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
   const [role, setRole] = useState<Role>('citizen');
 
   async function handleSubmit(event: FormEvent) {

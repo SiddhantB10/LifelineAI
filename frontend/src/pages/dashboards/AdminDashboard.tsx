@@ -4,10 +4,10 @@ import { SectionHeading } from '../../components/SectionHeading';
 import { demoAmbulances, demoEmergencies, demoHospitals } from '../../data/demo';
 
 const metrics = [
-  { label: 'Response time', value: '4.8 min', icon: BarChart3 },
-  { label: 'Active ambulances', value: `${demoAmbulances.length}`, icon: MapPinned },
-  { label: 'Critical load', value: `${demoEmergencies.filter((item) => item.severity === 'Critical').length}`, icon: TriangleAlert },
-  { label: 'Connected users', value: '12,408', icon: Users },
+  { label: 'Response time', value: 'N/A', icon: BarChart3 },
+  { label: 'Active ambulances', value: demoAmbulances.length > 0 ? `${demoAmbulances.length}` : '--', icon: MapPinned },
+  { label: 'Critical load', value: demoEmergencies.length > 0 ? `${demoEmergencies.filter((item) => item.severity === 'Critical').length}` : '--', icon: TriangleAlert },
+  { label: 'Connected users', value: '--', icon: Users },
 ];
 
 export function AdminDashboard() {
@@ -39,17 +39,23 @@ export function AdminDashboard() {
           <GlassCard>
             <p className="text-xs uppercase tracking-[0.3em] text-slate-400">Hospital status</p>
             <div className="mt-4 space-y-3">
-              {demoHospitals.map((hospital) => (
-                <div key={hospital.id} className="rounded-2xl border border-white/10 bg-white/5 p-4">
-                  <div className="flex items-center justify-between gap-4">
-                    <span className="font-semibold text-white">{hospital.name}</span>
-                    <span className="text-xs text-slate-400">Load {hospital.load}%</span>
+              {demoHospitals.length > 0 ? (
+                demoHospitals.map((hospital) => (
+                  <div key={hospital.id} className="rounded-2xl border border-white/10 bg-white/5 p-4">
+                    <div className="flex items-center justify-between gap-4">
+                      <span className="font-semibold text-white text-sm">{hospital.name}</span>
+                      <span className="text-xs text-slate-400">Load {hospital.load}%</span>
+                    </div>
+                    <div className="mt-3 h-2 overflow-hidden rounded-full bg-white/10">
+                      <div className="h-full rounded-full bg-gradient-to-r from-red-500 to-orange-400" style={{ width: `${hospital.load}%` }} />
+                    </div>
                   </div>
-                  <div className="mt-3 h-2 overflow-hidden rounded-full bg-white/10">
-                    <div className="h-full rounded-full bg-gradient-to-r from-red-500 to-orange-400" style={{ width: `${hospital.load}%` }} />
-                  </div>
+                ))
+              ) : (
+                <div className="rounded-2xl border border-white/10 bg-white/5 p-4 text-center text-slate-400">
+                  <p className="text-sm">Hospital data will appear here once hospitals connect to the system.</p>
                 </div>
-              ))}
+              )}
             </div>
           </GlassCard>
         </div>

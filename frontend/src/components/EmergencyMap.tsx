@@ -8,6 +8,24 @@ export function EmergencyMap() {
   const ambulance = demoAmbulances[0];
   const hospital = demoHospitals[0];
 
+  // Show placeholder if no demo data available
+  if (!emergency || !ambulance || !hospital) {
+    return (
+      <GlassCard className="overflow-hidden p-0">
+        <div className="border-b border-white/10 px-5 py-4">
+          <p className="text-sm font-semibold text-white">Live Emergency Map</p>
+          <p className="text-xs text-slate-400">Tracking ambulance, patient, and hospital routing in real time</p>
+        </div>
+        <div className="h-[360px] md:h-[460px] flex items-center justify-center bg-gradient-to-br from-slate-900 to-slate-950">
+          <div className="text-center">
+            <div className="text-slate-500 mb-2">No active emergencies</div>
+            <p className="text-xs text-slate-600">Map will display live emergency tracking when incidents are reported</p>
+          </div>
+        </div>
+      </GlassCard>
+    );
+  }
+
   return (
     <GlassCard className="overflow-hidden p-0">
       <div className="border-b border-white/10 px-5 py-4">
