@@ -14,8 +14,6 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
-        with:
-          token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Setup Node.js
         uses: actions/setup-node@v4
@@ -62,28 +60,25 @@ jobs:
           FIREBASE_PROJECT: lifeline-ai-67fac
           FIREBASE_SERVICE_ACCOUNT: ${{ secrets.FIREBASE_SERVICE_ACCOUNT }}
           FIREBASE_TOKEN: ${{ secrets.FIREBASE_TOKEN }}
+          FIREBASE_SERVICE_ACCOUNT_LIFELINE_AI_67FAC: ${{ secrets.FIREBASE_SERVICE_ACCOUNT_LIFELINE_AI_67FAC }}
+          GCP_SA_KEY: ${{ secrets.GCP_SA_KEY }}
         run: |
-          if [[ "$FIREBASE_SERVICE_ACCOUNT" == {* ]]; then
-            echo "Using FIREBASE_SERVICE_ACCOUNT as JSON" > firebase-debug.log
-            echo "$FIREBASE_SERVICE_ACCOUNT" > "$RUNNER_TEMP/firebase-service-account.json"
+          SA="$FIREBASE_SERVICE_ACCOUNT"
+          if [ -z "$SA" ]; then SA="$FIREBASE_SERVICE_ACCOUNT_LIFELINE_AI_67FAC"; fi
+          if [ -z "$SA" ]; then SA="$GCP_SA_KEY"; fi
+          
+          if [[ "$SA" == {* ]]; then
+            echo "Using Service Account JSON"
+            echo "$SA" > "$RUNNER_TEMP/firebase-service-account.json"
             export GOOGLE_APPLICATION_CREDENTIALS="$RUNNER_TEMP/firebase-service-account.json"
-            firebase deploy --project "$FIREBASE_PROJECT" --only functions,hosting:web --non-interactive --debug >> firebase-debug.log 2>&1 || firebase deploy --project "$FIREBASE_PROJECT" --only hosting:web --non-interactive --debug >> firebase-debug.log 2>&1
+            firebase deploy --project "$FIREBASE_PROJECT" --only functions,hosting:web --non-interactive || firebase deploy --project "$FIREBASE_PROJECT" --only hosting:web --non-interactive
           elif [ -n "$FIREBASE_TOKEN" ]; then
-            echo "Using FIREBASE_TOKEN" > firebase-debug.log
-            firebase deploy --project "$FIREBASE_PROJECT" --only functions,hosting:web --token "$FIREBASE_TOKEN" --non-interactive --debug >> firebase-debug.log 2>&1 || firebase deploy --project "$FIREBASE_PROJECT" --only hosting:web --token "$FIREBASE_TOKEN" --non-interactive --debug >> firebase-debug.log 2>&1
-          elif [ -n "$FIREBASE_SERVICE_ACCOUNT" ]; then
-            echo "FIREBASE_SERVICE_ACCOUNT is not JSON, treating as token" > firebase-debug.log
-            firebase deploy --project "$FIREBASE_PROJECT" --only functions,hosting:web --token "$FIREBASE_SERVICE_ACCOUNT" --non-interactive --debug >> firebase-debug.log 2>&1 || firebase deploy --project "$FIREBASE_PROJECT" --only hosting:web --token "$FIREBASE_SERVICE_ACCOUNT" --non-interactive --debug >> firebase-debug.log 2>&1
+            echo "Using FIREBASE_TOKEN"
+            firebase deploy --project "$FIREBASE_PROJECT" --only functions,hosting:web --token "$FIREBASE_TOKEN" --non-interactive || firebase deploy --project "$FIREBASE_PROJECT" --only hosting:web --token "$FIREBASE_TOKEN" --non-interactive
+          elif [ -n "$SA" ]; then
+            echo "Service account is not JSON, treating as token"
+            firebase deploy --project "$FIREBASE_PROJECT" --only functions,hosting:web --token "$SA" --non-interactive || firebase deploy --project "$FIREBASE_PROJECT" --only hosting:web --token "$SA" --non-interactive
           else
-            echo "No Firebase credentials found!" > firebase-debug.log
+            echo "No Firebase credentials found in any known secret variable!"
             exit 1
           fi
-
-      - name: Commit debug log
-        if: always()
-        run: |
-          git config --global user.name "github-actions"
-          git config --global user.email "github-actions@github.com"
-          git add firebase-debug.log
-          git commit -m "chore: add firebase debug log [skip ci]" || echo "No changes to commit"
-          git push
