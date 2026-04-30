@@ -70,7 +70,11 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
         try {
           const response = await api.login({ email, password, role: loginRole });
-          sessionUser = (response.user as UserProfile | null) ?? null;
+          if (response.user) {
+            sessionUser = response.user as UserProfile;
+          } else {
+            sessionUser = await findUserInFirestore(email, loginRole);
+          }
         } catch {
           sessionUser = await findUserInFirestore(email, loginRole);
         }

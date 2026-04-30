@@ -3,7 +3,7 @@ import { AmbulanceRecord, EmergencyRecord, HospitalRecord, UserProfile } from '.
 // Demo data has been removed for live production
 // All data will be fetched from Firebase/backend
 
-export const demoStats = [];
+export const demoStats: any[] = [];
 
 export const demoUsers: UserProfile[] = [];
 
